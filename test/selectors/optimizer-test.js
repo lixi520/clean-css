@@ -232,6 +232,26 @@ vows.describe(SelectorsOptimizer)
     }, { advanced: true })
   )
   .addBatch(
+    optimizerContext('selectors - semantic merging mode', {
+      'simple': [
+        '.a{color:red}.b{color:#000}.c{color:red}',
+        '.a,.c{color:red}.b{color:#000}'
+      ],
+      'BEM #1 - BE blocking': [
+        '.block{color:red}.block--element{color:#000}.block--element__modifier{color:red}',
+        '.block{color:red}.block--element{color:#000}.block--element__modifier{color:red}'
+      ],
+      'BEM #2 - tail merging': [
+        '.block{color:red}.block--element{color:#000}.block--element__modifier{color:red}a{color:red}.block2--element__modifier{color:red}',
+        '.block{color:red}.block--element{color:#000}.block--element__modifier,.block2--element__modifier,a{color:red}'
+      ],
+      'BEM #3 - ': [
+        '.block{color:red}.a-block,.block--element{color:#000}.block--element__modifier{color:red}',
+        '.block{color:red}.a-block,.block--element{color:#000}.block--element__modifier{color:red}'
+      ]
+    }, { advanced: true, semanticMerging: true })
+  )
+  .addBatch(
     optimizerContext('properties', {
       'empty body': [
         'a{}',
